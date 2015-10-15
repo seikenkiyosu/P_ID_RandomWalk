@@ -10,7 +10,7 @@ public class P_ID_Uniform {
 		
 		n = 100,						//個体数
 		delta = 4,						//グラフの最大次数
-		s = 5,							//タイマの上限値
+		s = 100,							//タイマの上限値
 	
 		LID_MAX = n;					//最大のID(初期状況のlidに用いる)
 	
@@ -25,13 +25,10 @@ public class P_ID_Uniform {
 		boolean CT_count_flag = true, HT_count_flag = false;
 		
 		while (true) {
-			//リーダを数える
-			int leadercounter = 0;
-			for(int i=0; i<n; i++) if(agent[i].var==agent[i].lid){ leadercounter++; }
-			
-			if(leadercounter!=1 && HT_count_flag){ break; }
-			
-			if (leadercounter==1) { CT_count_flag = false; HT_count_flag = true; }
+			if (IsSafeConfiguration(agent)) { 
+				CT_count_flag = false; HT_count_flag = true; 
+				break;
+				}
 			
 			//initiatorとresponderを決める
 			Random R = new Random();
@@ -55,6 +52,30 @@ public class P_ID_Uniform {
 	}
 	
 	
+	//安定状況かの判別
+	private static boolean IsSafeConfiguration(Agent agent[]){
+		
+		//最小のidとそのノードを見つける
+		int min = LID_MAX+1;
+		Agent v_min = new Agent();
+		for (int i = 0; i < n; i++) 
+			if (min > agent[i].var) {
+				min = agent[i].var;
+				v_min = new Agent(i, s);
+			}
+		
+		//v.lid = id(v_min)かどうか
+		for(int i=0; i < n; i++) if (agent[i].var != v_min.var) { return false; }
+		
+		//セーフタイムかどうか
+		for(int i=0; i < n; i++) if(agent[i].timer < n/2){ return false; }
+		
+		//v_min.timer = t_maxかどうか
+		if (v_min.timer != s) { return false; }
+		
+		//全部条件満たしてたらtrueを返す
+		return true;
+	}
 	
 	//距離を返す
 	private static double distance (Agent initiator, Agent responder) {

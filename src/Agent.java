@@ -13,6 +13,10 @@ public class Agent {
 		dy;
 	
 	//コンストラクタ
+	public Agent () {
+		
+	}
+	
 	public Agent (int var, int timerset) {
 		this.var = var;
 		Random R = new Random();
