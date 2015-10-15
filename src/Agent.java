@@ -1,23 +1,26 @@
+import java.util.Random;
 
 public class Agent {
-	//メンバ
-	//既知の情報
-	private int N;
-	private int Delta;
+	public int
+		var,		//id
+		lid,		//既知のid最小値
+		timer;		//タイマ
 	
-	private int var;		//id
-	private int lid;		//既知のid最小値
-	private int timer;		//タイマ
-	private Agent neigh[];	//隣接ノード
+	public double 
+		x,		//位置
+		y,
+		dx,		//速度
+		dy;
 	
 	//コンストラクタ
-	public Agent (int N, int Delta, int var, int timerset) {
-		this.N = N; this.Delta = Delta;
+	public Agent (int var, int timerset) {
 		this.var = var;
-		this.timer = timerset;
+		Random R = new Random();
+		this.lid = R.nextInt(P_ID_Uniform.LID_MAX);
+		this.timer = R.nextInt(timerset)+1;
 	}
 	//メソッド
-	public int getvar() {
-		return var;
+	public void MoveAction () {
+
 	}
 }
