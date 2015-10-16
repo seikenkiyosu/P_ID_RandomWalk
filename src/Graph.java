@@ -46,4 +46,13 @@ public class Graph {
 	public void MoveAction (int MoveModel) {
 		
 	}
+	
+	public void ShowGraph () {
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++)
+				if (List[i][j]) { System.out.print(1 + " "); }
+				else { System.out.print(0 + " "); }
+			System.out.print ("\n");
+		}
+	}
 }
