@@ -39,8 +39,8 @@ public class P_ID_RandomWalk {
 			}
 			
 			//initiatorとresponderを決める
-			for (int initiator = 0; initiator < n; initiator++)
-				for (int responder = 0; responder < n; responder++)
+			for (int initiator = 0; initiator < n/2; initiator++)
+				for (int responder = initiator; responder < n; responder++)
 					//交流できるなら交流
 					if (graph.List[initiator][responder] &&
 						distance(agent[initiator], agent[responder]) <= DISTANCE_FOR_INTERACTION &&
