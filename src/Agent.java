@@ -1,7 +1,5 @@
 import java.util.Random;
 
-import org.omg.CORBA.PUBLIC_MEMBER;
-
 public class Agent {
 	public int
 		var,		//id
@@ -11,22 +9,31 @@ public class Agent {
 	public double 
 		x,		//位置
 		y,
-		dx,		//速度
-		dy;
+		vx,		//速度
+		vy;
+	
+	
+	public static final int 
+		RandomWalk = 0,
+		RandomWaypoint = 1;
 	
 	//コンストラクタ	
 	public Agent () {
 		Random R = new Random();
 		//idの設定
 		while (true) {
-			this.var = R.nextInt(P_ID_Uniform.LID_MAX);
-			if (!P_ID_Uniform.idlist[this.var]) { P_ID_Uniform.idlist[this.var] = true; break; }
+			this.var = R.nextInt(P_ID_RandomWalk.LID_MAX);
+			if (!P_ID_RandomWalk.idlist[this.var]) { P_ID_RandomWalk.idlist[this.var] = true; break; }
 		}
 		
-		//false idもふ￥ひくように
-		this.lid = R.nextInt(P_ID_Uniform.LID_MAX);
+		//false idもひくように
+		this.lid = R.nextInt(P_ID_RandomWalk.LID_MAX);
 		
-		this.timer = R.nextInt(P_ID_Uniform.s)+1;
+		this.timer = R.nextInt(P_ID_RandomWalk.s)+1;
+		
+		//場所初期化
+		this.x = R.nextInt(P_ID_RandomWalk.FIELD_SIZE) + R.nextDouble();
+		this.y = R.nextInt(P_ID_RandomWalk.FIELD_SIZE) + R.nextDouble();
 	}
 
 	//メソッド
@@ -34,7 +41,23 @@ public class Agent {
 		return var==lid ? true : false;
 	}
 	
-	public void MoveAction () {
-
+	//モデルごとの移動
+	public void MoveAction (int Model) {
+		switch (Model) {
+		case RandomWalk:
+			Random R = new Random();
+			double r = P_ID_RandomWalk.DISTANCE_PER_ROUND;
+			double theta = R.nextInt(360) + R.nextDouble();
+			this.vx = r*Math.cos(theta);
+			this.vy = r*Math.sin(theta);
+			this.x += this.vx;
+			this.y += this.vy;
+			break;
+		case RandomWaypoint:
+			
+			break;
+		default:
+			break;
+		}
 	}
 }

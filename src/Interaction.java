@@ -21,11 +21,11 @@ public class Interaction {
 		
 		//11～16
 		if (x.var==x.lid || y.var==y.lid) {
-			x.timer = y.timer = P_ID_Uniform.s;
+			x.timer = y.timer = P_ID_RandomWalk.s;
 		}
 		else if (x.timer == 0) {
 			x.lid = y.lid = min(x.var, y.var);
-			x.timer = y.timer = P_ID_Uniform.s;
+			x.timer = y.timer = P_ID_RandomWalk.s;
 		}
 	}
 	

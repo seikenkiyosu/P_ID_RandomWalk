@@ -1,16 +1,16 @@
-import java.util.Random;
-
-public class P_ID_Uniform {
+public class P_ID_RandomWalk {
 	public static final int 
 		FIELD_SIZE = 100,				//フィールドサイズ
+		REMOVE_LINK_PROBABILITY = 50,
 		DISTANCE_FOR_INTERACTION = 1, 	//交流するための距離
+		DISTANCE_PER_ROUND = 1,
 		
 		N = 1000,						//個体数の上限値
-		Delta = 10,						//最大次数の上限値 
+		Delta = 30,						//最大次数の上限値 
 		
-		n = 9,						//個体数
+		n = 50,						//個体数
 		delta = 4,						//グラフの最大次数
-		s = 12,							//タイマの上限値
+		s = 100,							//タイマの上限値
 	
 		LID_MAX = 2*n;					//最大のID(初期状況のlidに用いる)
 	
@@ -23,19 +23,10 @@ public class P_ID_Uniform {
 		for (int i = 0; i < LID_MAX; i++) idlist[i] = false;
 		for (int i = 0; i < n; i++) agent[i] = new Agent();
 		
-
-//		graph.ShowGraph();
-		
 		int CT = 0, HT = 0;
 		boolean CT_count_flag = true, HT_count_flag = false;
 		
 		while (true) {
-			int leadercounter = 0;
-			for (int i = 0; i < n; i++) {
-				if (agent[i].IsLeader()) leadercounter++;
-			}
-//			System.out.println("the number of leaders = " + leadercounter);
-			
 			if (IsSafeConfiguration(agent)) { 
 				if (CT_count_flag) System.out.println("CT = " + CT);
 				CT_count_flag = false; 
@@ -48,19 +39,19 @@ public class P_ID_Uniform {
 			}
 			
 			//initiatorとresponderを決める
-			Random R = new Random();
-			int initiator = -1, responder = -1;
-			while (initiator == responder) { 
-				initiator = R.nextInt(n);
-				responder = R.nextInt(n);
-			}
+			for (int initiator = 0; initiator < n; initiator++)
+				for (int responder = 0; responder < n; responder++)
+					//交流できるなら交流
+					if (graph.List[initiator][responder] &&
+						distance(agent[initiator], agent[responder]) <= DISTANCE_FOR_INTERACTION &&
+						initiator != responder) {
+						Interaction.interaction(agent[initiator], agent[responder]);
+						if (CT_count_flag) CT++;		//交流ごとにカウント
+						if (HT_count_flag) HT++;
+					}
 			
-			//交流できるなら交流
-			if (graph.List[initiator][responder]) {
-				Interaction.interaction(agent[initiator], agent[responder]);
-				if (CT_count_flag) CT++;
-				if (HT_count_flag) HT++;
-			}
+			//各agent移動
+			for (int i = 0; i < n; i++) agent[i].MoveAction(Agent.RandomWalk);
 		}
 
 		System.out.println("HT = " + HT);
