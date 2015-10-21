@@ -73,7 +73,7 @@ public class P_ID_RandomWalk {
 		//v.lid = id(v_min)かどうか
 		for(int i=0; i < n; i++) 
 			if (agent[i].lid != v_min.var) {
-//				for( int j = 0; j < n; j++) System.out.print(agent[j].lid + "\t");
+//				for( int j = 0; j < n; j++) System.out.print(agent[j].lid + "\t");	//各lidを表示
 //				System.out.println("\n");
 				return false; 
 			}
